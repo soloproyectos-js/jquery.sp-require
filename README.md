@@ -1,2 +1,2 @@
 # sp-require
-Require plugin for jQuery
+A require plugin for jQuery.

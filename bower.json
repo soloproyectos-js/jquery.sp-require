@@ -1,0 +1,23 @@
+{
+  "name": "jquery.sp-require",
+  "version": "0.1.0",
+  "homepage": "https://github.com/soloproyectos-js/jquery.sp-require",
+  "authors": [
+    "Gonzalo Chumillas <gchumillas@email.com>"
+  ],
+  "description": "A require plugin for jQuery.",
+  "main": "dist/jquery.sp-require.min.js",
+  "keywords": [
+    "jquery",
+    "require"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "vendor",
+    "test"
+  ],
+  "dependencies": {
+    "jquery": "~2.0"
+  }
+}
