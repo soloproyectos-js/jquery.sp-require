@@ -1,6 +1,6 @@
 # $.spRequire
 
-A jQuery plugin to load 'async' libraries. This plugin can load JavaScript libraries asynchronously. Every file is composed by a list of CSS and JavaScript files defined in a configuration object.
+A jQuery plugin to load 'async' libraries. This plugin can load JavaScript libraries asynchronously. Each library is composed by a list of CSS and JavaScript files defined in a configuration object.
 
 See the `demo` folder for complete examples.
 
