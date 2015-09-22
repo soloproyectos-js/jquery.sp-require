@@ -17,7 +17,7 @@
     };
     
     /**
-     * Removes duplicate items.
+     * Removes duplicate items from an array.
      * 
      * @param {Array} items List of items
      * 

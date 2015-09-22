@@ -9,6 +9,9 @@
  * @link      https://github.com/soloproyectos-js/jquery.sp-require
  */
 (function ($) {
+    /**
+     * RequireManager class.
+     */
     $.spRequireManager = function () {
         this._libraries = [];
     };

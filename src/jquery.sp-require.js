@@ -33,7 +33,32 @@
      */
     var _methods = {
         /**
-         * Main method.
+         * Loads the libraries.
+         * 
+         * Example 1: loads the library 'lib1' and 'lib2' and calls the function.
+         * ```JavaScript
+         * $.require(['lib1', 'lib2'], function () {
+         *      $('#message').text('The libraries have been loaded');
+         * });
+         * ```
+         * 
+         * Example 2: uses the $.Promise class.
+         * More info at: https://api.jquery.com/deferred.promise/
+         * ```JavaScript
+         * $.require(['lib1', 'lib2'])
+         *      .done(function () {
+         *          // this function is executed on success
+         *          console.log('The libraries have been loaded');
+         *      })
+         *      .fail(function () {
+         *          // this function is executed if one of the JavaScript files could not be loaded
+         *          console.log('Sadly some libraries could not be loaded');
+         *      })
+         *      .always(function () {
+         *          // this function is always executed
+         *          console.log('I don\'t care');
+         *      });
+         * ```
          * 
          * @param {Array.<string>} libName List of required library names
          * @param {Function}       onReady Called when the libraries have been loaded (not required)
