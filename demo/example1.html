@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Example 1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../dist/jquery.sp-require.min.js"></script>
+    <script src="js/config.js"></script>
+    <script>
+        // loads the libraries and then executes the callback function
+        $.require(['lib1', 'lib3'], function () {
+            $('#message').text('Libraries loaded successfully.');
+        });
+    </script>
+</head>
+
+<body>
+    <p id="message">Loading libraries...</p>
+</body>
+</html>
+

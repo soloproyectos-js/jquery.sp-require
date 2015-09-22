@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Example 3</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../dist/jquery.sp-require.min.js"></script>
+    <script src="js/config.js"></script>
+    <script>
+        /**
+         * A more advanced example.
+         * 
+         * In this case we use the following classes:
+         * 
+         * $.spRequireLibrary: represents a 'library'
+         * spRequireManager: represents a 'library manager'
+         * 
+         * See the files `src/jquery.sp-require-library.js` and `src/jquery.sp-require-manager.js`
+         * for more info.
+         *
+         * The following demo shows an example the 'circular-reference'.
+         * The 'lib1' library depends on 'lib2' which depends on 'lib3' which, at the same time,
+         * depends on 'lib1'.
+         */
+        $(function () {
+            var lib1 = new $.spRequireLibrary();
+            var lib2 = new $.spRequireLibrary();
+            var lib3 = new $.spRequireLibrary();
+            
+            // lib1 has some js and css files and it 'requires' lib2
+            lib1.addJs('js/script11.js');
+            lib1.addJs('js/script12.js');
+            lib1.addJs('js/script13.js');
+            lib1.addCss('css/style11.css');
+            lib1.addCss('css/style12.css');
+            lib1.addCss('css/style13.css');
+            lib1.addLibrary(lib2);
+            
+            // lib2 has some js and css files and it 'requires' lib3
+            lib2.addJs('js/script21.js');
+            lib2.addJs('js/script22.js');
+            lib1.addCss('css/style21.css');
+            lib1.addCss('css/style22.css');
+            lib2.addLibrary(lib3);
+            
+            // lib3 has some js and css files and it 'requires' lib1
+            lib3.addJs('js/script31.js');
+            lib3.addCss('css/style31.css');
+            lib3.addLibrary(lib1);
+            
+            // crates the 'library manager' and loads 'lib3'
+            var m = new $.spRequireManager();
+            m.addLibrary(lib3);
+            m.load()
+                .done(function () {
+                    // this function is executed when all libraries have been successfully loaded
+                    $('#message').text('Libraries loaded successfully.');
+                })
+                .fail(function () {
+                    // this function is executed when some libraries couldn't be loaded
+                    $('#message').text('Sadly, some libraries couldn\'t be loaded.');
+                })
+                .always(function () {
+                    // this function is always executed
+                    $('#bugs-bunny-message').text('That\'s all Folks!');
+                });
+        });
+    </script>
+</head>
+
+<body>
+    <p id="message">Loading libraries...</p>
+    <p id="bugs-bunny-message">&nbsp;</p>
+</body>
+</html>
+

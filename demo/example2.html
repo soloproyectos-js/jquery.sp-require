@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Example 2</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../dist/jquery.sp-require.min.js"></script>
+    <script src="js/config.js"></script>
+    <script>
+        // this example uses the $.Promise class. For more info, see:
+        // https://api.jquery.com/deferred.promise/
+        $.require(['lib1', 'lib3'])
+            .done(function () {
+                // this function is executed when all libraries have been successfully loaded
+                $('#message').text('Libraries loaded successfully.');
+            })
+            .fail(function () {
+                // this function is executed when some libraries couldn't be loaded
+                $('#message').text('Sadly, some libraries couldn\'t be loaded.');
+            })
+            .always(function () {
+                // this function is always executed
+                $('#bugs-bunny-message').text('That\'s all Folks!');
+            });
+    </script>
+</head>
+
+<body>
+    <p id="message">Loading libraries...</p>
+    <p id="bugs-bunny-message">&nbsp;</p>
+</body>
+</html>
+
