@@ -2,6 +2,8 @@
 
 A jQuery plugin to load 'async' libraries. This plugin can load JavaScript libraries asynchronously. Every file is composed by a list of CSS and JavaScript files defined in a configuration object.
 
+See the `demo` folder for complete examples.
+
 ## Installation
 ```bash
 $ bower install jquery.sp-require
@@ -32,5 +34,3 @@ $.require(['lib1', 'lib3'])
     console.log('That\'s all Folks!');
   });
 ```
-
-For complete examples, see the `demo` folder.
