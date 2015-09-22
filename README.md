@@ -12,6 +12,8 @@ Install the [bower](https://github.com/bower/bower) package manager and then exe
 $ bower install jquery.sp-require
 ```
 
+The above command downloads the whole repository. The distribution files are always under the `dist` folder.
+
 ## Basic usage
 
 The following example loads the libraries and executes a callback function:
