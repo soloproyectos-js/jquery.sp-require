@@ -5,6 +5,9 @@ A jQuery plugin to load 'async' libraries. This plugin can load JavaScript libra
 See the `demo` folder for complete examples.
 
 ## Installation
+
+Install the [bower](https://github.com/bower/bower) JavaScript package manager and the execute the following command:
+
 ```bash
 $ bower install jquery.sp-require
 ```
