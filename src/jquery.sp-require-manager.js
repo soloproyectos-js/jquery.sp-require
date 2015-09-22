@@ -50,10 +50,12 @@
     $.spRequireManager.prototype._loadCss = function () {
         var sources = this._getCssSources();
         
-        $.each(sources, function (index, source) {
-            $('head').append(
-                $('<link rel="stylesheet" type="text/css" />').attr('href', source)
-            );
+        $(function () {
+            $.each(sources, function (index, source) {
+                $('head').append(
+                    $('<link rel="stylesheet" type="text/css" />').attr('href', source)
+                );
+            });
         });
     };
     
@@ -70,26 +72,28 @@
         var len = sources.length;
         var success = true;
         
-        if (len > 0) {
-            // loads the sources and then resolves or rejects
-            $.each(sources, function (index, source) {
-                $.ajax({
-                    url: source,
-                    dataType: "script",
-                    cache: true
-                }).fail(function () {
-                    success = false;
-                }).always(function () {
-                    len--;
-                    if (len < 1) {
-                        ret[success? 'resolve': 'reject']();
-                    }
+        $(function () {
+            if (len > 0) {
+                // loads the sources and then resolves or rejects
+                $.each(sources, function (index, source) {
+                    $.ajax({
+                        url: source,
+                        dataType: "script",
+                        cache: true
+                    }).fail(function () {
+                        success = false;
+                    }).always(function () {
+                        len--;
+                        if (len < 1) {
+                            ret[success? 'resolve': 'reject']();
+                        }
+                    });
                 });
-            });
-        } else {
-            // directly resolves, as it isn't necessary to load any source
-            ret.resolve();
-        }
+            } else {
+                // directly resolves, as it isn't necessary to load any source
+                ret.resolve();
+            }
+        });
         
         return ret.promise();
     };
