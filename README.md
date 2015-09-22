@@ -6,7 +6,7 @@ See the `demo` folder for complete examples.
 
 ## Installation
 
-Install the [bower](https://github.com/bower/bower) JavaScript package manager and then execute the following command:
+Install the [bower](https://github.com/bower/bower) package manager and then execute the following command:
 
 ```bash
 $ bower install jquery.sp-require
