@@ -98,19 +98,15 @@
          * @return {Object}
          */
         'config': function (config) {
+            // TODO: config flexible
             if (config !== null) {
-                _config = config;
-                
-                // TODO: validar config
-                // TODO: librerías duplicadas
-                // TODO: config flexible
+                var config = new $.spRequireConfig(config);
+                var libraries = config.getLibraries();
                 
                 // adds libraries
-                var libraries = _config.libraries;
                 $.each(libraries, function (name, library) {
-                    var sources = library.sources;
-                    var jsSources = sources.js;
-                    var cssSources = sources.css;
+                    var jsSources = library.jsSources;
+                    var cssSources = library.cssSources;
                     var lib = new $.spRequireLibrary();
                     
                     $.each(jsSources, function(index, source) {
@@ -139,6 +135,7 @@
                 });
             }
             
+            _config = config;
             return _config;
         }
     };
