@@ -108,7 +108,6 @@
      * @return {Array.<string>}
      */
     $.spRequireLibrary.prototype._getSources = function (propertyName, excludeLibraries) {
-        var self = this;
         var ret = [];
         
         // default arguments

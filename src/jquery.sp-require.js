@@ -22,12 +22,6 @@
     var _libraries = {};
     
     /**
-     * Require Manger.
-     * @var {$.requireManager}
-     */
-    var _manager = null;
-    
-    /**
      * Available methods.
      * @var {Object.<Function>}
      */
