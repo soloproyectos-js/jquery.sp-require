@@ -148,6 +148,11 @@
                         
                         $.each(requires, function (index, name) {
                             var requiredLib = _libraries[name];
+                            
+                            if (requiredLib === undefined) {
+                                $.error('Library not found: ' + name);
+                            }
+                            
                             lib.addLibrary(requiredLib);
                         });
                     }
