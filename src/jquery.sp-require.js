@@ -119,8 +119,8 @@
         'config': function (config) {
             // TODO: config flexible
             if (config !== undefined) {
-                var config = new $.spRequireConfig(config);
-                var libraries = config.getLibraries();
+                var conf = new $.spRequireConfig(config);
+                var libraries = conf.getLibraries();
                 
                 // adds libraries
                 $.each(libraries, function (name, library) {
@@ -157,9 +157,10 @@
                         });
                     }
                 });
+                
+                _config = config;
             }
             
-            _config = config;
             return _config;
         }
     };
