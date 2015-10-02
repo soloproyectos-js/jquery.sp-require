@@ -118,7 +118,7 @@
          */
         'config': function (config) {
             // TODO: config flexible
-            if (config !== null) {
+            if (config !== undefined) {
                 var config = new $.spRequireConfig(config);
                 var libraries = config.getLibraries();
                 
