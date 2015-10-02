@@ -83,7 +83,10 @@
                         url: source,
                         dataType: "script",
                         cache: true
-                    }).fail(function () {
+                    }).fail(function (xhr, type, error) {
+                        if (type == 'parsererror') {
+                            console.error(error);
+                        }
                         success = false;
                     }).always(function () {
                         len--;
