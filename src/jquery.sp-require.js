@@ -123,6 +123,7 @@
                 var libraries = conf.getLibraries();
                 
                 // adds libraries
+                _libraries = {};
                 $.each(libraries, function (name, library) {
                     var jsSources = library.jsSources;
                     var cssSources = library.cssSources;
