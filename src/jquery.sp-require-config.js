@@ -42,46 +42,140 @@
         var libraries = config.libraries || {};
         $.each(libraries, function (name, item) {
             var library = {};
+            var itemType = $.type(item);
             
-            // loads 'sources' attribute
-            var sources = item.sources || {};
-            if ($.type(sources) != 'object') {
-                $.error('Invalid \'libraries.<libName>.sources\' attribute');
+            if (itemType == 'string') {
+                library = self._parseString(item);
+            } else
+            if (itemType == 'array') {
+                library = self._parseArray(item);
+            } else
+            if (itemType == 'object') {
+                library = self._parseObject(item);
+            } else {
+                $.error(
+                    'Invalid library \'' + name + '\'. ' +
+                    'Expected \'string\', \'Array.<string>\' or ' +
+                    '\'{\n\t' +
+                        'sources: {\n\t\t' +
+                            'js: Array.<string>,  // not required\n\t\t' +
+                            'css: Array.<string>  // not required\n\t' +
+                        '},\n\t' +
+                        'requires: Array.<string> // not required\n' +
+                    '}\''
+                );
             }
-            
-            // loads 'sources.js' attribute
-            var js = sources.js || [];
-            if ($.type(js) != 'array') {
-                $.error('Invalid \'libraries.<libName>.sources.js\' attribute');
-            }
-            $.each(js, function (index, item) {
-                if ($.type(item) !== 'string') {
-                    $.error('Invalid \'libraries.<libName>.sources.js[string]\' value');
-                }
-            });
-            library.jsSources = js;
-            
-            // loads 'sources.css' attribute
-            var css = sources.css || [];
-            if ($.type(css) != 'array') {
-                $.error('Invalid \'libraries.<libName>.sources.css\' attribute');
-            }
-            $.each(css, function (index, item) {
-                if ($.type(item) !== 'string') {
-                    $.error('Invalid \'libraries.<libName>.sources.css[string]\' value');
-                }
-            });
-            library.cssSources = css;
-            
-            // loads 'requires' attribute
-            var requires = item.requires || [];
-            if ($.type(requires) != 'array') {
-                $.error('Invalid \'libraries.requires\' attribute');
-            }
-            library.requires = requires;
             
             self._libraries[name] = library;
         });
+    };
+    
+    /**
+     * Parses a string library:
+     * 
+     * @return {
+     *      jsSources: Array.<string>,
+     *      cssSources: Array.<string>,
+     *      requires: Array.<string>
+     * }
+     */
+    $.spRequireConfig.prototype._parseString = function (library) {
+        return {
+            jsSources: [library],
+            cssSources: [],
+            requires: []
+        };
+    };
+    
+    /**
+     * Parses a library of the following form:
+     * 
+     * Library: Array.<string>
+     * 
+     * @return {
+     *      jsSources: Array.<string>,
+     *      cssSources: Array.<string>,
+     *      requires: Array.<string>
+     * }
+     */
+    $.spRequireConfig.prototype._parseArray = function (library) {
+        var ret = {
+            jsSources: [],
+            cssSources: [],
+            requires: []
+        };
+        
+        $.each(library, function (index, item) {
+            if ($.type(item) != 'string') {
+                $.error('Invalid \'libraries.<library>\' property. Expected \'Array.<string>\'');
+            }
+            ret.jsSources.push(item);
+        });
+        
+        return ret;
+    };
+    
+    /**
+     * Parses a library of the following form:
+     * 
+     * Library: {
+     *      js: Array.<string>  // not required
+     *      css: Array.<string> // not required
+     * }
+     * 
+     * @return {
+     *      jsSources: Array.<string>,
+     *      cssSources: Array.<string>,
+     *      requires: Array.<string>
+     * }
+     */
+    $.spRequireConfig.prototype._parseObject = function (library) {
+        var ret = {
+            jsSources: [],
+            cssSources: [],
+            requires: []
+        };
+        
+        // loads 'sources' attribute
+        var sources = library.sources || {};
+        
+        // loads 'sources.js' attribute
+        var js = sources.js || [];
+        if ($.type(js) != 'array') {
+            $.error('Invalid \'libraries.<libName>.sources.js\' attribute');
+        }
+        $.each(js, function (index, item) {
+            if ($.type(item) != 'string') {
+                $.error('Invalid \'libraries.<libName>.sources.js[string]\' value');
+            }
+            ret.jsSources.push(item);
+        });
+        
+        // loads 'sources.css' attribute
+        var css = sources.css || [];
+        if ($.type(css) != 'array') {
+            $.error('Invalid \'libraries.<libName>.sources.css\' attribute');
+        }
+        $.each(css, function (index, item) {
+            if ($.type(item) != 'string') {
+                $.error('Invalid \'libraries.<libName>.sources.css[string]\' value');
+            }
+            ret.cssSources.push(item);
+        });
+        
+        // loads 'requires' attribute
+        var requires = library.requires || [];
+        if ($.type(requires) != 'array') {
+            $.error('Invalid \'libraries.requires\' attribute');
+        }
+        $.each(requires, function (index, item) {
+            if ($.type(item) != 'string') {
+                $.error('Invalid \'libraries.<libName>.requires[string]\' value');
+            }
+            ret.requires.push(item);
+        });
+        
+        return ret;
     };
     
     /**
