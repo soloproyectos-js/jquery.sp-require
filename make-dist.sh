@@ -15,5 +15,5 @@ cat \
 | uglifyjs \
     --compress \
     --mangle \
-    --preamble "/*! jQuery.spRequire v0.1.3 | Copyright (c) 2015 Gonzalo Chumillas | https://github.com/soloproyectos-js/jquery.sp-require/blob/master/LICENSE */" \
+    --preamble "/*! jQuery.spRequire v0.1.4 | Copyright (c) 2015 Gonzalo Chumillas | https://github.com/soloproyectos-js/jquery.sp-require/blob/master/LICENSE */" \
     -o dist/jquery.sp-require.min.js
