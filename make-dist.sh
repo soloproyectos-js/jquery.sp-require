@@ -8,7 +8,7 @@ rm -rf dist/*
 # compresses JavaScript files
 cat \
     src/jquery.sp-require-util.js \
-    src/jquery.sp-require-config.js \
+    src/jquery.sp-require-config-parser.js \
     src/jquery.sp-require-library.js \
     src/jquery.sp-require-manager.js \
     src/jquery.sp-require.js \
