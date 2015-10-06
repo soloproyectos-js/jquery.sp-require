@@ -117,7 +117,6 @@
          * @return {Object}
          */
         'config': function (config) {
-            // TODO: config flexible
             if (config !== undefined) {
                 var conf = new $.spRequireConfig(config);
                 var libraries = conf.getLibraries();
@@ -125,8 +124,8 @@
                 // adds libraries
                 _libraries = {};
                 $.each(libraries, function (name, library) {
-                    var jsSources = library.jsSources;
-                    var cssSources = library.cssSources;
+                    var jsSources = library.sources.js;
+                    var cssSources = library.sources.css;
                     var lib = new $.spRequireLibrary();
                     
                     $.each(jsSources, function(index, source) {
