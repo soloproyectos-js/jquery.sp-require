@@ -4,9 +4,9 @@
  * This plugin requires: 
  *      1. jQuery ~2.0
  *
- * @author    Gonzalo Chumillas <gchumillas@email.com>
- * @license   https://github.com/soloproyectos-js/jquery.sp-require/blob/master/LICENSE MIT License
- * @link      https://github.com/soloproyectos-js/jquery.sp-require
+ * @author  Gonzalo Chumillas <gchumillas@email.com>
+ * @license https://github.com/soloproyectos-js/jquery.sp-require/blob/master/LICENSE MIT License
+ * @link    https://github.com/soloproyectos-js/jquery.sp-require
  */
 (function ($) {
     /**
