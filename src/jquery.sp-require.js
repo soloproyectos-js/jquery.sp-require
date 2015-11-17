@@ -60,8 +60,9 @@
          *      });
          * ```
          * 
-         * @param {Array.<string>} libName List of required library names
-         * @param {Function}       onReady Called when the libraries have been loaded (not required)
+         * @param {Array.<string>|string} libName List of required library names
+         * @param {Function}              onReady Called when the libraries have been loaded
+         *                                        (not required)
          * 
          * @return {$.Promise}
          */
@@ -70,6 +71,19 @@
                 return new $.Deferred().promise();
             }
             
+            // overloading parameters
+            if ($.type(libNames) == 'string') {
+                libNames = [libNames];
+            }
+            
+            // checks arguments
+            if ($.type(libNames) != 'array'
+                || arguments.length > 1 && $.type(onReady) != 'function'
+            ) {
+                $.error('Invalid arguments. Please check the documentation');
+            }
+            
+            // loads the required libraries
             var package = new $.spRequireLibrary();
             $.each(libNames, function (index, name) {
                 var library = _libraries[name];
@@ -191,7 +205,8 @@
         // arguments
         var args = Array.prototype.slice.call(arguments);
         var methodName = 'init';
-        if (args.length > 0 && $.type(args[0]) == 'string') {
+        
+        if (args.length > 0 && Object.keys(_methods).indexOf(args[0]) > -1) {
             methodName = args[0];
             args = args.slice(1);
         }
