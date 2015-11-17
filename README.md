@@ -1,18 +1,16 @@
 # $.spRequire
 
-A jQuery plugin to load 'async' libraries. This plugin can load JavaScript libraries asynchronously. Each library is composed by a list of CSS and JavaScript files defined in a configuration object.
+A jQuery plugin to load JavaScript libraries when they are needed. Unlike other similar plugins, this plugin considers the loading of CSS files by default.
 
 See the `demo` folder for complete examples.
 
 ## Installation
 
-Install the [bower](https://github.com/bower/bower) package manager and then execute the following command:
-
+Install [bower](https://github.com/bower/bower) and execute the following command:
 ```bash
 $ bower install jquery.sp-require
 ```
-
-The above command downloads the whole repository. The distribution files are always under the `dist` folder.
+Distribution files are under the `dist` folder.
 
 ## Basic usage
 
