@@ -21,6 +21,13 @@
     };
     
     /**
+     * This variable solves the problem of the 'circular reference'.
+     * @static
+     * @var {Array.<$.spRequireLibrary>}
+     */
+    $.spRequireLibrary._circularLibraries = [];
+    
+    /**
      * URL loader.
      * @var {$.spRequireUrlLoader}
      */
@@ -127,9 +134,13 @@
      * @return {$.Promise}
      */
     $.spRequireLibrary.prototype._loadLibraries = function () {
+        $.spRequireLibrary._circularLibraries.push(this);
+        
         var l = new $.spRequireLoader(this);
         $.each(this._libraries, function () {
-            l.addLoader($.proxy(this.load, this));
+            if ($.inArray(this, $.spRequireLibrary._circularLibraries) < 0) {
+                l.addLoader($.proxy(this.load, this));
+            }
         });
         return l.load();
     };
