@@ -13,10 +13,29 @@
      * Library constructor.
      */
     $.spRequireLibrary = function () {
+        this._isAsync = true;
         this._libraries = [];
         this._jsSources = [];
         this._cssSources = [];
+        
+        if ($.spRequireLibrary._urlLoader == null) {
+            $.spRequireLibrary._urlLoader = new $.spRequireUrlLoader();
+        }
     };
+    
+    /**
+     * URL loader
+     * @static
+     * @var {$.spRequireUrlLoader}
+     */
+    $.spRequireLibrary._urlLoader = null;
+    
+    /**
+     * Is an asynchronous library?
+     * When the library is 'synchronous', it loads the required libraries in first place. After that,
+     * it loads the rest of JavaScript sources.
+     */
+    $.spRequireLibrary.prototype._isAsync = true;
     
     /**
      * Required libraries.
@@ -26,15 +45,37 @@
     
     /**
      * List of JavaScript sources.
-     * @var {Array.<string>}
+     * @var {Array.<string>} URL
      */
     $.spRequireLibrary.prototype._jsSources = null;
     
     /**
      * List of CSS sources.
-     * @var {Array.<string>}
+     * @var {Array.<string>} URL
      */
     $.spRequireLibrary.prototype._cssSources = null;
+    
+    /**
+     * Is the library asynchronous?
+     * 
+     * An synchronous library loads the required libraries in first place.
+     * 
+     * @return {boolean}
+     */
+    $.spRequireLibrary.prototype.isAsync = function () {
+        return this._isAsync;
+    };
+    
+    /**
+     * Sets the asynchronous state.
+     * 
+     * @param {boolean} value Is the library asynchronous?
+     * 
+     * @return {void}
+     */
+    $.spRequireLibrary.prototype.setAsync = function (value) {
+        this._isAsync = value;
+    };
     
     /**
      * Adds a JavaScript source.
@@ -44,7 +85,7 @@
      * @return {void}
      */
     $.spRequireLibrary.prototype.addJs = function (url) {
-        this._jsSources.push(this._getAbsoluteUrl(url));
+        this._jsSources.push(url);
     };
     
     /**
@@ -55,7 +96,7 @@
      * @return {void}
      */
     $.spRequireLibrary.prototype.addCss = function (url) {
-        this._cssSources.push(this._getAbsoluteUrl(url));
+        this._cssSources.push(url);
     };
     
     /**
@@ -70,74 +111,73 @@
     };
     
     /**
-     * Gets all JavaScript sources (including required sources).
+     * Loads resouces.
      * 
-     * This function removes duplicate items.
-     * 
-     * @return {Array.<string>}
+     * @return {$.Promise}
      */
-    $.spRequireLibrary.prototype._getJsSources = function () {
-        return this._getSources('_jsSources');
+    $.spRequireLibrary.prototype.load = function () {
+        this._loadCssSources();
+        
+        // loads JavaScript sources
+        var l = new $.spRequireLoader(this);
+        l.addLoader($.proxy(this._loadLibraries, this));
+        l.addLoader($.proxy(this._loadJsSources, this));
+        return l[this._isAsync? 'load': 'syncLoad']();
     };
     
     /**
-     * Gets all CSS sources (including required sources).
+     * Loads required libraries.
      * 
-     * This function removes duplicate items.
-     * 
-     * @return {Array.<string>}
+     * @return {$.Promise}
      */
-    $.spRequireLibrary.prototype._getCssSources = function () {
-        return this._getSources('_cssSources');
-    };
-    
-    /**
-     * Gets a list of items from a specific attribute.
-     * 
-     * The propertyName parameter is supposed to be the name of an attribute that contains a list of
-     * strings. For example:
-     * 
-     * ```JavaScript
-     * var items = this._getSources('_jsSources');
-     * var items = this._getSources('_cssSources');
-     * ```
-     * 
-     * @param {string} propertyName     Property name
-     * @param {string} excludeLibraries Do not search in these libraries (not required, internal only)
-     * 
-     * @return {Array.<string>}
-     */
-    $.spRequireLibrary.prototype._getSources = function (propertyName, excludeLibraries) {
-        var ret = [];
-        
-        // default arguments
-        if (excludeLibraries === undefined) {
-            excludeLibraries = [];
-        }
-        
-        // merges required libraries
-        excludeLibraries.push(this);
+    $.spRequireLibrary.prototype._loadLibraries = function () {
+        var self = this;
+        var l = new $.spRequireLoader(this);
         $.each(this._libraries, function () {
-            if ($.inArray(this, excludeLibraries) < 0) {
-                var sources = this._getSources(propertyName, excludeLibraries);
-                Array.prototype.push.apply(ret, sources);
-            }
+            l.addLoader($.proxy(this.load, this));
         });
-        
-        Array.prototype.push.apply(ret, this[propertyName]);
-        return $.spRequireUtil.arrayUnique(ret);
+        return l.load();
     };
     
     /**
-     * Gets the absolute URL.
+     * Loads JavaScript sources.
      * 
-     * @param {string} url URL
-     * 
-     * @return {string}
+     * @return {$.Promise}
      */
-    $.spRequireLibrary.prototype._getAbsoluteUrl = function (url) {
-        var a = document.createElement('a');
-        a.href = url;
-        return a.href;
+    $.spRequireLibrary.prototype._loadJsSources = function () {
+        var l = new $.spRequireLoader(this);
+        $.each(this._jsSources, function (index, url) {
+            l.addLoader(function () {
+                return $.spRequireLibrary._urlLoader.load(url, function () {
+                    return $.ajax({
+                        url: url,
+                        dataType: "script",
+                        cache: true
+                    }).fail(function (xhr, type, error) {
+                        if (type == 'parsererror') {
+                            console.error(url + '\n' + error);
+                        }
+                    });
+                });
+            });
+        });
+        return l.load();
+    };
+    
+    /**
+     * Loads CSS sources.
+     * 
+     * @return {void}
+     */
+    $.spRequireLibrary.prototype._loadCssSources = function () {
+        var self = this;
+        
+        $.each(self._cssSources, function (index, url) {
+            $.spRequireLibrary._urlLoader.load(url, function () {
+                $('head').append(
+                    $('<link rel="stylesheet" type="text/css" />').attr('href', this)
+                );
+            });
+        });
     };
 })(jQuery);

@@ -13,7 +13,7 @@
      * Helper class.
      */
     $.spRequireUtil = function () {
-        // Do Nothing
+        // No-Op
     };
     
     /**
@@ -38,4 +38,16 @@
         return ret;
     };
     
+    /**
+     * Gets absolute URL.
+     * 
+     * @param {string} url URL
+     * 
+     * @return {string}
+     */
+    $.spRequireUtil.getAbsoluteUrl = function (url) {
+        var a = document.createElement('a');
+        a.href = url;
+        return a.href;
+    };
 })(jQuery);

@@ -60,19 +60,15 @@
          * @return {$.Promise}
          */
         'init': function (libNames, onReady) {
-            var manager = new $.spRequireManager();
-            
+            var package = new $.spRequireLibrary();
             $.each(libNames, function (index, name) {
                 var library = _libraries[name];
-                
                 if (library === undefined) {
                     $.error('Library not found: ' + name);
                 }
-                
-                manager.addLibrary(_libraries[name]);
+                package.addLibrary(_libraries[name]);
             });
-            
-            return manager.load().done(onReady);
+            return package.load().done(onReady);
         },
         
         
@@ -127,6 +123,8 @@
                     var jsSources = library.sources.js;
                     var cssSources = library.sources.css;
                     var lib = new $.spRequireLibrary();
+                    
+                    lib.setAsync(library.async);
                     
                     $.each(jsSources, function(index, source) {
                         lib.addJs(source);

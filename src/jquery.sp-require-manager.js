@@ -39,8 +39,9 @@
      * @return {$.Promise}
      */
     $.spRequireManager.prototype.load = function () {
-        this._loadCss();
-        return this._loadJs();
+        $.each(this._libraries, function () {
+            this.load();
+        });
     };
     
     /**
@@ -70,6 +71,7 @@
      * @return {$.Promise}
      */
     $.spRequireManager.prototype._loadJs = function () {
+        var self = this;
         var ret = new $.Deferred();
         var sources = this._getJsSources();
         var len = sources.length;
@@ -77,7 +79,12 @@
         
         $(function () {
             if (len > 0) {
+                $.each(self._libraries, function () {
+                    this.load();
+                });
+                
                 // loads the sources and then resolves or rejects
+                /*
                 $.each(sources, function (index, source) {
                     $.ajax({
                         url: source,
@@ -94,7 +101,7 @@
                             ret[success? 'resolve': 'reject']();
                         }
                     });
-                });
+                });*/
             } else {
                 // directly resolves, as it isn't necessary to load any source
                 ret.resolve();

@@ -73,6 +73,7 @@
             
             // parses library
             try {
+                obj.async = $.type(lib.async) == 'boolean'? lib.async: true;
                 obj.sources.js = self._parseAttr(libs, name, {});
                 if ($.type(obj.sources.js) == 'object') {
                     // parses library.sources
