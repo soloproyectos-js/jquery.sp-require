@@ -49,7 +49,7 @@
             lib3.addLibrary(lib1);
             
             // crates the 'library manager' and loads 'lib3'
-            var m = new $.spRequireManager();
+            var m = new $.spRequireLibrary();
             m.addLibrary(lib3);
             m.load()
                 .done(function () {
