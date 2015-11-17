@@ -16,6 +16,7 @@
      */
     $.spRequireConfig = function (config) {
         this._libraries = {};
+        this._config = config;
         this._parse(config);
     };
     
@@ -24,13 +25,7 @@
      * @var {string}
      */
     $.spRequireConfig.prototype._errorMessage =
-        "Invalid '%library-name%' library. Expected 'string', 'Array.<string>' or '{\n\t" +
-            "sources: {\n\t\t" +
-                "js: 'string' or 'Array.<string>',  // not required\n\t\t" +
-                "css: 'string' or 'Array.<string>'  // not required\n\t" +
-            "},\n\t" +
-            "requires: 'string' or 'Array.<string>' // not required\n" +
-        '}\'';
+        "The '%library-name%' is not well formed. Please checks the documentation";
     
     /**
      * List of libraries.
