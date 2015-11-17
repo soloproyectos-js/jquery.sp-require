@@ -16,7 +16,6 @@
      */
     $.spRequireConfig = function (config) {
         this._libraries = {};
-        this._config = config;
         this._parse(config);
     };
     
@@ -25,7 +24,7 @@
      * @var {string}
      */
     $.spRequireConfig.prototype._errorMessage =
-        "The '%library-name%' is not well formed. Please check the documentation";
+        "The '%library-name%' library is not well formed";
     
     /**
      * List of libraries.
@@ -68,6 +67,7 @@
             
             // parses library
             try {
+                self._parseAttr(lib, 'async', true);
                 obj.async = $.type(lib.async) == 'boolean'? lib.async: true;
                 obj.sources.js = self._parseMixedAttr(libs, name, {});
                 if ($.type(obj.sources.js) == 'object') {
@@ -82,11 +82,30 @@
                     obj.requires = self._parseMixedAttr(lib, 'requires');
                 }
             } catch (error) {
-                $.error(self._errorMessage.replace('%library-name%', name));
+                $.error(self._errorMessage.replace('%library-name%', name) + ':\n' + error.message);
             }
             
             self._libraries[name] = obj;
         });
+    };
+    
+    /**
+     * Parses an attribute.
+     * 
+     * @param {Object} obj      Plain object
+     * @param {string} attrName Attribute name
+     * @param {Mixed}  defValue Default value (not required)
+     */
+    $.spRequireConfig.prototype._parseAttr = function (obj, attrName, defValue) {
+        var ret = obj.hasOwnProperty(attrName)? obj[attrName]: defValue;
+        
+        if ($.type(ret) != $.type(defValue)) {
+            $.error(
+                'The \'' + attrName + '\' property was expected to be \'' + $.type(defValue) + '\''
+            );
+        }
+        
+        return ret;
     };
     
     /**
@@ -98,7 +117,7 @@
      * 
      * @param {Object} obj      Plain object
      * @param {string} attrName Attribute name
-     * @param {*}      defValue Default value (not required, default is [])
+     * @param {Mixed}  defValue Default value (not required, default is [])
      * 
      * @return {Array.<string>|null}
      */
@@ -117,12 +136,23 @@
         if (type == 'array') {
             $.each(item, function (key, value) {
                 if ($.type(value) != 'string') {
-                    $.error('Invalid type');
+                    $.error(
+                        'The \'' + attrName + '\' property was expected to be ' +
+                        '\'string\', an \'array of strings\' or an \'object\'\n' +
+                        'Please check the documentation'
+                    );
                 }
             });
         } else
         if (arguments.length < 3 || type != $.type(defValue)) {
-            $.error('Invalid type');
+            var msgError =  'The \'' + attrName + '\' property was expected to be ' +
+                '\'string\' or an \'array of strings\'';
+            if (arguments.length >= 3) {
+                msgError = 'The \'' + attrName + '\' property was expected to be ' +
+                '\'string\', an \'array of strings\' or an \'' + $.type(defValue) + '\'';
+            }
+            msgError += '\nPlease check the documentation';
+            $.error(msgError);
         }
         
         return item;
