@@ -16,6 +16,12 @@
     var _config = {};
     
     /**
+     * Is the configuration object valid?
+     * @var {boolean}
+     */
+    var _isValidConfig = true;
+    
+    /**
      * List of libraries.
      * @var {Object.<string, $.requireLibrary>}
      */
@@ -60,6 +66,10 @@
          * @return {$.Promise}
          */
         'init': function (libNames, onReady) {
+            if (!_isValidConfig) {
+                return new $.Deferred().promise();
+            }
+            
             var package = new $.spRequireLibrary();
             $.each(libNames, function (index, name) {
                 var library = _libraries[name];
@@ -114,8 +124,17 @@
          */
         'config': function (config) {
             if (config !== undefined) {
+                // parses the configuration object
+                var libraries = [];
                 var conf = new $.spRequireConfig(config);
-                var libraries = conf.getLibraries();
+                _isValidConfig = true;
+                try {
+                    conf._parse(config);
+                    libraries = conf.getLibraries();
+                } catch (error) {
+                    _isValidConfig = false;
+                    throw new Error(error);
+                }
                 
                 // adds libraries
                 _libraries = {};

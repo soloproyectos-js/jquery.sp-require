@@ -11,12 +11,9 @@
 (function ($) {
     /**
      * Config class.
-     * 
-     * @param {Object} config Config object
      */
-    $.spRequireConfig = function (config) {
+    $.spRequireConfig = function () {
         this._libraries = {};
-        this._parse(config);
     };
     
     /**
