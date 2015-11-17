@@ -120,7 +120,7 @@
         var ret = new $.Deferred();
         
         // searches or creates a link
-        var absUrl = $.spRequireUtil.getAbsoluteUrl(url);
+        var absUrl = this._getAbsoluteUrl(url);
         var link = this._searchLink(absUrl);
         if (link === null) {
             link = new Link(absUrl);
@@ -185,5 +185,18 @@
         });
         
         return ret;
+    };
+    
+    /**
+     * Gets absolute URL.
+     * 
+     * @param {string} url URL
+     * 
+     * @return {string}
+     */
+    $.spRequireUrlLoader.prototype._getAbsoluteUrl = function (url) {
+        var a = document.createElement('a');
+        a.href = url;
+        return a.href;
     };
 })(jQuery);
