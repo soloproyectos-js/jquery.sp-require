@@ -14,7 +14,7 @@ Distribution files are under the `dist` folder.
 
 ## Configuration object
 
-Libraries are declared in a conguration object. In the following example we have three libries, and each library has a set of JavaScript and CSS files. By default, libraries are loaded asynchronously. That is: **they can be loaded in any order**.
+Libraries are declared in a conguration object. In the following example we have three libraries, and each library has a set of JavaScript and CSS files. By default libraries **are loaded asynchronously**. That is: **they can be loaded in any order**, unless otherwise indicated (see `lib3` library, `async` property).
 
 ```JavaScript
 $.require('config', {
