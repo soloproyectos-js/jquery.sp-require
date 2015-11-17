@@ -19,7 +19,10 @@ $.require('config', {
             },
             requires: ['lib1']
         },
+        // this library is loaded at last place
+        // as it is an 'synchronous' library
         lib3: {
+            async: false,
             sources: {
                 js: ['js/script31.js'],
                 css: ['css/style31.css']
