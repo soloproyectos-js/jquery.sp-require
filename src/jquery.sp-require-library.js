@@ -175,7 +175,7 @@
         $.each(self._cssSources, function (index, url) {
             $.spRequireLibrary._urlLoader.load(url, function () {
                 $('head').append(
-                    $('<link rel="stylesheet" type="text/css" />').attr('href', this)
+                    $('<link rel="stylesheet" type="text/css" />').attr('href', url)
                 );
             });
         });
