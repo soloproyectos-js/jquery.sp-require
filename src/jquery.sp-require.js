@@ -181,6 +181,7 @@
                             var requiredLib = _libraries[name];
                             
                             if (requiredLib === undefined) {
+                                _isValidConfig = false;
                                 $.error('Library not found: ' + name);
                             }
                             
