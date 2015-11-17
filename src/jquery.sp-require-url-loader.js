@@ -54,7 +54,7 @@
      * // otherwise, it prints:
      * //     Failed 1!
      * //     Failed 2!
-     * var urlLoader = new $.spRequireUrlLoader();
+     * var urlLoader = $.spRequireUrlLoader.getInstance();
      * urlLoader.load('script.js', function (url) {
      *     // this method is called once
      *     return $.get(url);
@@ -83,10 +83,31 @@
     };
     
     /**
+     * Current instance.
+     * @var {$.spRequireUrlLoader}
+     */
+    $.spRequireUrlLoader._instance = null;
+    
+    /**
      * List of links.
      * @var {Array.<Link>}
      */
     $.spRequireUrlLoader.prototype._links = [];
+    
+    /**
+     * Gets current instance.
+     * 
+     * This method implements the Singleton Pattern:
+     * https://en.wikipedia.org/wiki/Singleton_pattern
+     * 
+     * @return {$.spRequireUrlLoader}
+     */
+    $.spRequireUrlLoader.getInstance = function () {
+        if ($.spRequireUrlLoader._instance === null) {
+            $.spRequireUrlLoader._instance = new $.spRequireUrlLoader();
+        }
+        return $.spRequireUrlLoader._instance;
+    };
     
     /**
      * Loads an URL.
@@ -97,7 +118,7 @@
      * 
      * Example:
      * ```JavaScript
-     * var urlLoader = new $.spRequireUrlLoader();
+     * var urlLoader = $.spRequireUrlLoader.getInstance();
      * urlLoader.load('script.php', function (url) {
      *     // this method is called once
      *     return $.get(url);

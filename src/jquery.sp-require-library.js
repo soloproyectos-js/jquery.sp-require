@@ -17,18 +17,14 @@
         this._libraries = [];
         this._jsSources = [];
         this._cssSources = [];
-        
-        if ($.spRequireLibrary._urlLoader == null) {
-            $.spRequireLibrary._urlLoader = new $.spRequireUrlLoader();
-        }
+        this._urlLoader = $.spRequireUrlLoader.getInstance();
     };
     
     /**
-     * URL loader
-     * @static
+     * URL loader.
      * @var {$.spRequireUrlLoader}
      */
-    $.spRequireLibrary._urlLoader = null;
+    $.spRequireLibrary.prototype._urlLoader = null;
     
     /**
      * Is an asynchronous library?
@@ -145,10 +141,11 @@
      * @return {$.Promise}
      */
     $.spRequireLibrary.prototype._loadJsSources = function () {
+        var self = this;
         var l = new $.spRequireLoader(this);
         $.each(this._jsSources, function (index, url) {
             l.addLoader(function () {
-                return $.spRequireLibrary._urlLoader.load(url, function () {
+                return self._urlLoader.load(url, function () {
                     return $.ajax({
                         url: url,
                         dataType: "script",
@@ -171,9 +168,8 @@
      */
     $.spRequireLibrary.prototype._loadCssSources = function () {
         var self = this;
-        
         $.each(self._cssSources, function (index, url) {
-            $.spRequireLibrary._urlLoader.load(url, function () {
+            self._urlLoader.load(url, function () {
                 $('head').append(
                     $('<link rel="stylesheet" type="text/css" />').attr('href', url)
                 );
