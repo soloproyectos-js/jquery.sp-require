@@ -69,17 +69,17 @@
             // parses library
             try {
                 obj.async = $.type(lib.async) == 'boolean'? lib.async: true;
-                obj.sources.js = self._parseAttr(libs, name, {});
+                obj.sources.js = self._parseMixedAttr(libs, name, {});
                 if ($.type(obj.sources.js) == 'object') {
                     // parses library.sources
-                    obj.sources.js = self._parseAttr(obj.sources.js, 'sources', {});
+                    obj.sources.js = self._parseMixedAttr(obj.sources.js, 'sources', {});
                     if ($.type(obj.sources.js) == 'object') {
-                        obj.sources.css = self._parseAttr(obj.sources.js, 'css');
-                        obj.sources.js = self._parseAttr(obj.sources.js, 'js');
+                        obj.sources.css = self._parseMixedAttr(obj.sources.js, 'css');
+                        obj.sources.js = self._parseMixedAttr(obj.sources.js, 'js');
                     }
                     
                     // parses library.requires
-                    obj.requires = self._parseAttr(lib, 'requires');
+                    obj.requires = self._parseMixedAttr(lib, 'requires');
                 }
             } catch (error) {
                 $.error(self._errorMessage.replace('%library-name%', name));
@@ -90,10 +90,11 @@
     };
     
     /**
-     * Parses an object attribute.
+     * Parses a 'mixed' attribute.
      * 
-     * If no default value has passed, the attribute must be either a string or an array of strings.
-     * Otherwise the type of the attribute must be same as the type of the default value.
+     * A 'mixed' attribute can be either a string, an array of strings or an object. If 'defValue' is
+     * missed, then the attribute must be either a string or an arrary of strings. Otherwise, the type
+     * of the attribute must be the same as the type of 'defValue'.
      * 
      * @param {Object} obj      Plain object
      * @param {string} attrName Attribute name
@@ -101,7 +102,7 @@
      * 
      * @return {Array.<string>|null}
      */
-    $.spRequireConfig.prototype._parseAttr = function (obj, attrName, defValue) {
+    $.spRequireConfig.prototype._parseMixedAttr = function (obj, attrName, defValue) {
         // default arguments
         if (defValue === undefined) {
             defValue = [];
