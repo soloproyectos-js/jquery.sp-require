@@ -25,7 +25,7 @@
      * @var {string}
      */
     $.spRequireConfig.prototype._errorMessage =
-        "The '%library-name%' is not well formed. Please checks the documentation";
+        "The '%library-name%' is not well formed. Please check the documentation";
     
     /**
      * List of libraries.
