@@ -14,7 +14,7 @@
      * 
      * @param {Object} config Config object
      */
-    $.spRequireConfigParser = function (config) {
+    $.spRequireConfig = function (config) {
         this._libraries = {};
         this._parse(config);
     };
@@ -23,7 +23,7 @@
      * Error message.
      * @var {string}
      */
-    $.spRequireConfigParser.prototype._errorMessage =
+    $.spRequireConfig.prototype._errorMessage =
         "Invalid '%library-name%' library. Expected 'string', 'Array.<string>' or '{\n\t" +
             "sources: {\n\t\t" +
                 "js: 'string' or 'Array.<string>',  // not required\n\t\t" +
@@ -36,7 +36,7 @@
      * List of libraries.
      * @var {Object}
      */
-    $.spRequireConfigParser.prototype._libraries;
+    $.spRequireConfig.prototype._libraries;
     
     /**
      * Parses a config object.
@@ -45,7 +45,7 @@
      * 
      * @return {void}
      */
-    $.spRequireConfigParser.prototype._parse = function (config) {
+    $.spRequireConfig.prototype._parse = function (config) {
         var self = this;
         
         if (!$.isPlainObject(config)) {
@@ -106,7 +106,7 @@
      * 
      * @return {Array.<string>|null}
      */
-    $.spRequireConfigParser.prototype._parseAttr = function (obj, attrName, defValue) {
+    $.spRequireConfig.prototype._parseAttr = function (obj, attrName, defValue) {
         // default arguments
         if (defValue === undefined) {
             defValue = [];
@@ -137,7 +137,7 @@
      * 
      * @return {Object}
      */
-    $.spRequireConfigParser.prototype.getLibraries = function () {
+    $.spRequireConfig.prototype.getLibraries = function () {
         return this._libraries;
     };
 })(jQuery);

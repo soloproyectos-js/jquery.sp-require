@@ -114,7 +114,7 @@
          */
         'config': function (config) {
             if (config !== undefined) {
-                var conf = new $.spRequireConfigParser(config);
+                var conf = new $.spRequireConfig(config);
                 var libraries = conf.getLibraries();
                 
                 // adds libraries
