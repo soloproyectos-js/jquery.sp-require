@@ -196,7 +196,6 @@
      */
     $.spRequireUrlLoader.prototype._searchLink = function (url) {
         var ret = null;
-        var len = this._links.length;
         
         $.each(this._links, function () {
             if (this.url == url) {

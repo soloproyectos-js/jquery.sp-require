@@ -127,7 +127,6 @@
      * @return {$.Promise}
      */
     $.spRequireLibrary.prototype._loadLibraries = function () {
-        var self = this;
         var l = new $.spRequireLoader(this);
         $.each(this._libraries, function () {
             l.addLoader($.proxy(this.load, this));
