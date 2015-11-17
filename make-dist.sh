@@ -7,13 +7,13 @@ rm -rf dist/*
 
 # compresses JavaScript files
 cat \
-    src/jquery.sp-require-util.js \
-    src/jquery.sp-require-config-parser.js \
+    src/jquery.sp-require-config.js \
+    src/jquery.sp-require-loader.js \
+    src/jquery.sp-require-url-loader.js \
     src/jquery.sp-require-library.js \
-    src/jquery.sp-require-manager.js \
     src/jquery.sp-require.js \
 | uglifyjs \
     --compress \
     --mangle \
-    --preamble "/*! jQuery.spRequire v0.1.5 | Copyright (c) 2015 Gonzalo Chumillas | https://github.com/soloproyectos-js/jquery.sp-require/blob/master/LICENSE */" \
+    --preamble "/*! jQuery.spRequire v0.2.0 | Copyright (c) 2015 Gonzalo Chumillas | https://github.com/soloproyectos-js/jquery.sp-require/blob/master/LICENSE */" \
     -o dist/jquery.sp-require.min.js
