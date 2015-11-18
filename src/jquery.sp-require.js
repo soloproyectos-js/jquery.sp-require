@@ -37,7 +37,7 @@
          * 
          * Example 1: loads the library 'lib1' and 'lib2' and calls the function.
          * ```JavaScript
-         * $.require(['lib1', 'lib2'], function () {
+         * $.spRequire(['lib1', 'lib2'], function () {
          *      $('#message').text('The libraries have been loaded');
          * });
          * ```
@@ -45,7 +45,7 @@
          * Example 2: uses the $.Promise class.
          * More info at: https://api.jquery.com/deferred.promise/
          * ```JavaScript
-         * $.require(['lib1', 'lib2'])
+         * $.spRequire(['lib1', 'lib2'])
          *      .done(function () {
          *          // this function is executed on success
          *          console.log('The libraries have been loaded');
@@ -107,7 +107,7 @@
          * 
          * // sets and gets the configuration object
          * // 'libraries.css' and 'libraries.requires' are optional options
-         * var config = $.require('config', {
+         * var config = $.spRequire('config', {
          *     libraries: {
          *         lib1: {
          *             sources: {
@@ -204,7 +204,7 @@
      * 
      * @return {*}
      */
-    $.require = function () {
+    $.spRequire = function () {
         // arguments
         var args = Array.prototype.slice.call(arguments);
         var methodName = 'init';

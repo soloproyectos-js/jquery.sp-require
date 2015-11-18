@@ -17,7 +17,7 @@ Distribution files are under the `dist` folder.
 Libraries are declared in a configuration object. In the following example we have three libraries, and each library is composed by several JavaScript and CSS files. **By default libraries are loaded asynchronously. That is: they can be loaded in any order**. If you want a library to be loaded after other libraries, you can use the `async` attribute. In the below example, `library3` is loaded after `library2`.
 
 ```JavaScript
-$.require('config', {
+$.spRequire('config', {
     libraries: {
         lib1: {
             sources: {
