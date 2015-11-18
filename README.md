@@ -33,7 +33,7 @@ $.spRequire('config', {
             requires: ['lib1']
         },
         // this library IS LOADED AT LAST PLACE
-        // as it is a 'synchronous' library
+        // as it is an 'synchronous' library
         lib3: {
             async: false,
             sources: {
