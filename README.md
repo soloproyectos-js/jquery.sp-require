@@ -46,7 +46,7 @@ $.require('config', {
 });
 ```
 
-In some cases we can simplifies the configuration file. You can use an `string` to indicate a single element, an `array` of `strings` to indicate multiple elements or a `plain-object` to indicate several JavaScript and CSS files. For example:
+In some cases we can simplify the configuration file. You can use an `string` to indicate a single element, an `array` of `strings` to indicate multiple elements or a `plain-object` to indicate several JavaScript and CSS files. For example:
 
 ```JavaScript
 // lib1 has only one JavaScript file
