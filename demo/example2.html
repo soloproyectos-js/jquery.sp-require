@@ -9,7 +9,7 @@
     <script>
         // this example uses the $.Promise class. For more info, see:
         // https://api.jquery.com/deferred.promise/
-        $.require(['lib1', 'lib3'])
+        $.spRequire(['lib1', 'lib3'])
             .done(function () {
                 // this function is executed when all libraries have been successfully loaded
                 $('#message').text('Libraries loaded successfully.');

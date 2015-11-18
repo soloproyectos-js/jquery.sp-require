@@ -4,7 +4,7 @@
  * In the following example, we have three libraries, which are composed by a list of JavaScript and
  * CSS files. All attributes are optional but, if presents, they should look as follows.
  */
-$.require('config', {
+$.spRequire('config', {
     libraries: {
         lib1: {
             sources: {
