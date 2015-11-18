@@ -32,8 +32,8 @@ $.require('config', {
             },
             requires: ['lib1']
         },
-        // this library is loaded at last place
-        // as it is an 'synchronous' library
+        // this library IS LOADED AT LAST PLACE
+        // as it is a 'synchronous' library
         lib3: {
             async: false,
             sources: {
@@ -43,5 +43,54 @@ $.require('config', {
             requires: ['lib2']
         }
     }
+});
+```
+
+In some case we can simplifies the configuration file. You can use an `string` to indicate a single element, an `array` of `strings` to indicate multiple elements or a `plain-object` to indicate JavaScript and CSS files. For example:
+
+```JavaScript
+// lib1 has only one JavaScript file
+$.spRequire('config', {
+    lib1: 'js/script1.js'
+});
+
+// lib1 has three JavaScript files
+$.spRequire('config', {
+    lib1: ['js/script11.js', 'js/script12.js']
+});
+
+// lib1 has three JavaScript files and it requires lib2
+$.spRequire('config', {
+    lib1: {
+        sources: ['js/script11.js', 'js/script12.js', 'js/script13.js'],
+        requires: 'lib2'
+    },
+    lib2: 'js/script2.js'
+});
+
+// lib1 has one JavaScript file and one CSS file and it requires lib2 and lib3
+$.spRequire('config', {
+    lib1: {
+        sources: {
+            js: 'js/script1.js',
+            css: 'css/style1.css'
+        }
+        requires: ['lib2', 'lib3']
+    },
+    lib2: 'js/script2.js',
+    lib3: 'js/script3.js'
+});
+
+// lib1 has several JavaScript and CSS files and it requires lib2 and lib3
+$.spRequire('config', {
+    lib1: {
+        sources: {
+            js: ['js/script11.js', 'js/script12.js', 'js/script13.js'],
+            css: ['css/style11.css', 'css/style12.css', 'css/style13.css']
+        }
+        requires: ['lib2', 'lib3']
+    },
+    lib2: 'js/script2.js',
+    lib3: 'js/script3.js'
 });
 ```
