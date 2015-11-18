@@ -46,7 +46,7 @@ $.require('config', {
 });
 ```
 
-In some case we can simplifies the configuration file. You can use an `string` to indicate a single element, an `array` of `strings` to indicate multiple elements or a `plain-object` to indicate JavaScript and CSS files. For example:
+In some case we can simplifies the configuration file. You can use an `string` to indicate a single element, an `array` of `strings` to indicate multiple elements or a `plain-object` to indicate several JavaScript and CSS files. For example:
 
 ```JavaScript
 // lib1 has only one JavaScript file
@@ -92,5 +92,26 @@ $.spRequire('config', {
     },
     lib2: 'js/script2.js',
     lib3: 'js/script3.js'
+});
+```
+
+## Basic usage
+
+After declaring libraries in the configuration object, we can load tehem dynamically. For example:
+
+```JavaScript
+$.spRequire(['lib1', 'lib2'], function () {
+    console.log('Libraries are loaded and they are reday to be used');
+});
+```
+
+The `$.spRequire([libs...])` function returns a [jQuery.Promise](https://api.jquery.com/promise/) object, so the above example can also be written as follows:
+```JavaScript
+$.spRequire(['lib1', 'lib2']).done(function () {
+    console.log('Libraries are loaded and they are reday to be used');
+}).fail(function () {
+    console.log('An error has occurred and the libraries could not be loaded');
+}).alwasy(function () {
+    console.log('This function is always executed');
 });
 ```
