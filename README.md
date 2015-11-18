@@ -101,14 +101,14 @@ After declaring libraries in the configuration object, we can load them dynamica
 
 ```JavaScript
 $.spRequire(['lib1', 'lib2'], function () {
-    console.log('Libraries are loaded and they are reday to be used');
+    console.log('Libraries are loaded and they are readay to be used');
 });
 ```
 
 The `$.spRequire([libs...])` function returns a [jQuery.Promise](https://api.jquery.com/promise/) object, so the above example can also be written as follows:
 ```JavaScript
 $.spRequire(['lib1', 'lib2']).done(function () {
-    console.log('Libraries are loaded and they are reday to be used');
+    console.log('Libraries are loaded and they are readay to be used');
 }).fail(function () {
     console.log('An error has occurred and the libraries could not be loaded');
 }).alwasy(function () {
