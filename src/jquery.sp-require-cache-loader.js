@@ -85,31 +85,10 @@
     };
     
     /**
-     * Current instance.
-     * @var {$.spRequireCacheLoader}
-     */
-    $.spRequireCacheLoader._instance = null;
-    
-    /**
      * List of items.
      * @var {Array.<Item>}
      */
     $.spRequireCacheLoader.prototype._items = [];
-    
-    /**
-     * Gets current instance.
-     * 
-     * This method implements the Singleton Pattern:
-     * https://en.wikipedia.org/wiki/Singleton_pattern
-     * 
-     * @return {$.spRequireCacheLoader}
-     */
-    $.spRequireCacheLoader.getInstance = function () {
-        if ($.spRequireCacheLoader._instance === null) {
-            $.spRequireCacheLoader._instance = new $.spRequireCacheLoader();
-        }
-        return $.spRequireCacheLoader._instance;
-    };
     
     /**
      * Loads an item.

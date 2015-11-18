@@ -17,7 +17,7 @@
         this._libraries = [];
         this._jsSources = [];
         this._cssSources = [];
-        this._cacheLoader = $.spRequireCacheLoader.getInstance();
+        this._cacheLoader = $.spRequire('__cacheLoader__');
     };
     
     /**

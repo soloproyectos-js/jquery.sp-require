@@ -33,6 +33,21 @@
      */
     var _methods = {
         /**
+         * Gets the cache loader object.
+         * 
+         * This function is for internal purpose only.
+         * 
+         * @private
+         * @return {$.spRequireCacheLoader}
+         */
+        '__cacheLoader__': function () {
+            if (window.__cacheLoader__ === undefined) {
+                window.__cacheLoader__ = new $.spRequireCacheLoader();
+            }
+            return window.__cacheLoader__;
+        },
+        
+        /**
          * Loads the libraries.
          * 
          * Example 1: loads the library 'lib1' and 'lib2' and calls the function.
