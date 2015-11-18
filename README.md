@@ -54,7 +54,7 @@ $.spRequire('config', {
     lib1: 'js/script1.js'
 });
 
-// lib1 has three JavaScript files
+// lib1 has two JavaScript files
 $.spRequire('config', {
     lib1: ['js/script11.js', 'js/script12.js']
 });
