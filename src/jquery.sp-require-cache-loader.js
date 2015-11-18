@@ -1,10 +1,10 @@
 /**
  * jQuery.spRequire - A require plugin for jQuery.
  * 
- * This file contains the $.spRequireUrlLoader class. This class is used to avoid loading
- * the same URL several times.
+ * The class $.spRequireCacheLoader is used to avoid loading the same 'things' several times.
+ * A 'thing' can be an url, a file, a library... that is: something that can be 'loaded'.
  *
- * This plugin requires: 
+ * This plugin requires:
  *      1. jQuery ~2.0
  *
  * @author  Gonzalo Chumillas <gchumillas@email.com>
@@ -13,38 +13,40 @@
  */
 (function ($) {
     /**
-     * Link class.
+     * Item class.
      * 
-     * @param {string} url URL
+     * An 'item' is something that can be loaded: an url, a file, an object, etc...
+     * 
+     * @param {*} id Identifier
      */
-    var Link = function (url) {
-        this.url = url;
+    var Item = function (id) {
+        this.id = id;
         this.state = 'pending';
         this.deferrers = [];
     };
     
     /**
-     * Link URL.
-     * @var {string}
+     * Identifier.
+     * @var {*}
      */
-    Link.prototype.url = '';
+    Item.prototype.id = null;
     
     /**
-     * Link state (pending, resolved or rejected)
+     * Item state (pending, resolved or rejected)
      * @var {string}
      */
-    Link.prototype.state = 'pending';
+    Item.prototype.state = 'pending';
     
     /**
      * List of 'deferred' objects.
      * @var {Array.<$.Deferred>}
      */
-    Link.prototype.deferrers = [];
+    Item.prototype.deferrers = [];
     
     /**
-     * $.spRequireUrlLoader class.
+     * $.spRequireCacheLoader class.
      * 
-     * This class is used to avoid loading the same URL several times.
+     * This class is used to avoid loading the same 'thing' several times.
      * 
      * In the following example, 'script.js' is loaded only once:
      * ```JavaScript
@@ -54,8 +56,8 @@
      * // otherwise, it prints:
      * //     Failed 1!
      * //     Failed 2!
-     * var urlLoader = $.spRequireUrlLoader.getInstance();
-     * urlLoader.load('script.js', function (url) {
+     * var loader = $.spRequireCacheLoader.getInstance();
+     * loader.load('script.js', function (object) {
      *     // this method is called once
      *     return $.get(url);
      * }).done(function () {
@@ -66,7 +68,7 @@
      *     console.log('Failed 1!');
      * });
      * 
-     * urlLoader.load('script.js', function (url) {
+     * loader.load('script.js', function (url) {
      *     // this method is not called, as the 'script.php' file already exists
      *     return $.get(url);
      * }).done(function () {
@@ -78,21 +80,21 @@
      * });
      * ```
      */
-    $.spRequireUrlLoader = function () {
-        this._links = [];
+    $.spRequireCacheLoader = function () {
+        this._items = [];
     };
     
     /**
      * Current instance.
-     * @var {$.spRequireUrlLoader}
+     * @var {$.spRequireCacheLoader}
      */
-    $.spRequireUrlLoader._instance = null;
+    $.spRequireCacheLoader._instance = null;
     
     /**
-     * List of links.
-     * @var {Array.<Link>}
+     * List of items.
+     * @var {Array.<Item>}
      */
-    $.spRequireUrlLoader.prototype._links = [];
+    $.spRequireCacheLoader.prototype._items = [];
     
     /**
      * Gets current instance.
@@ -100,26 +102,26 @@
      * This method implements the Singleton Pattern:
      * https://en.wikipedia.org/wiki/Singleton_pattern
      * 
-     * @return {$.spRequireUrlLoader}
+     * @return {$.spRequireCacheLoader}
      */
-    $.spRequireUrlLoader.getInstance = function () {
-        if ($.spRequireUrlLoader._instance === null) {
-            $.spRequireUrlLoader._instance = new $.spRequireUrlLoader();
+    $.spRequireCacheLoader.getInstance = function () {
+        if ($.spRequireCacheLoader._instance === null) {
+            $.spRequireCacheLoader._instance = new $.spRequireCacheLoader();
         }
-        return $.spRequireUrlLoader._instance;
+        return $.spRequireCacheLoader._instance;
     };
     
     /**
-     * Loads an URL.
+     * Loads an item.
      * 
-     * If the URL wansn't loaded previously, this function calls the 'lodaer' function.
+     * If the item wansn't loaded previously, this function calls the 'loader' function.
      * If the 'loader' function returns a $.Promise object, it waits for the response and then
-     * 'resolves' or 'rejects' the URLs. Otherwise, it 'resolves' directly.
+     * 'resolves' or 'rejects'. Otherwise, it 'resolves' directly.
      * 
      * Example:
      * ```JavaScript
-     * var urlLoader = $.spRequireUrlLoader.getInstance();
-     * urlLoader.load('script.php', function (url) {
+     * var loader = $.spRequireCacheLoader.getInstance();
+     * loader.load('script.php', function (url) {
      *     // this method is called once
      *     return $.get(url);
      * }).done(function () {
@@ -131,35 +133,35 @@
      * });
      * ```
      * 
-     * @param {string}   url    URL
+     * @param {*}        id     Item Identifier
      * @param {Function} loader Loader function
      * 
      * @return {$.Promise}
      */
-    $.spRequireUrlLoader.prototype.load = function (url, loader) {
+    $.spRequireCacheLoader.prototype.load = function (id, loader) {
         var self = this;
         var ret = new $.Deferred();
         
-        // searches or creates a link
-        var absUrl = this._getAbsoluteUrl(url);
-        var link = this._searchLink(absUrl);
-        if (link === null) {
-            link = new Link(absUrl);
-            this._links.push(link);
+        // searches or creates an item
+        //var absUrl = this._getAbsoluteUrl(url);
+        var item = this._searchItem(id);
+        if (item === null) {
+            item = new Item(id);
+            this._items.push(item);
             
-            // calls the loader (the URL loader is called only one time)
-            var req = loader.call(this, url);
+            // calls the loader
+            var req = loader.call(this, item);
             if (req === undefined) {
                 req = (new $.Deferred().resolve()).promise();
             }
             
             // waits for the loader's response and resolves or rejects
             req.always(function () {
-                link.state = req.state();
+                item.state = req.state();
                 self._resolve();
             });
         }
-        link.deferrers.push(ret);
+        item.deferrers.push(ret);
         
         this._resolve();
         
@@ -167,18 +169,18 @@
     };
     
     /**
-     * Resolves or rejects the link deferrers.
+     * Resolves or rejects the item deferrers.
      * 
      * @return {void}
      */
-    $.spRequireUrlLoader.prototype._resolve = function () {
-        $.each(this._links, function () {
-            var link = this;
+    $.spRequireCacheLoader.prototype._resolve = function () {
+        $.each(this._items, function () {
+            var item = this;
             $.each(this.deferrers, function () {
-                if (link.state == 'resolved') {
+                if (item.state == 'resolved') {
                     this.resolve();
                 } else
-                if (link.state == 'rejected') {
+                if (item.state == 'rejected') {
                     this.reject();
                 }
             });
@@ -186,37 +188,24 @@
     };
     
     /**
-     * Searches a link by URL.
+     * Searches an item.
      * 
-     * This function returns a null value if the link was not found.
+     * This function returns a null value if the item was not found.
      * 
-     * @param {string} url URL
+     * @param {*} id Item identifier
      * 
-     * @return {Link|null}
+     * @return {Item|null}
      */
-    $.spRequireUrlLoader.prototype._searchLink = function (url) {
+    $.spRequireCacheLoader.prototype._searchItem = function (id) {
         var ret = null;
         
-        $.each(this._links, function () {
-            if (this.url == url) {
+        $.each(this._items, function () {
+            if (this.id === id) {
                 ret = this;
                 return false;
             }
         });
         
         return ret;
-    };
-    
-    /**
-     * Gets absolute URL.
-     * 
-     * @param {string} url URL
-     * 
-     * @return {string}
-     */
-    $.spRequireUrlLoader.prototype._getAbsoluteUrl = function (url) {
-        var a = document.createElement('a');
-        a.href = url;
-        return a.href;
     };
 })(jQuery);

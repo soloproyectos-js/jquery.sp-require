@@ -85,6 +85,7 @@
             
             // loads the required libraries
             var package = new $.spRequireLibrary();
+            package.name = '_main_package';
             $.each(libNames, function (index, name) {
                 var library = _libraries[name];
                 if (library === undefined) {
@@ -156,6 +157,7 @@
                     var jsSources = library.sources.js;
                     var cssSources = library.sources.css;
                     var lib = new $.spRequireLibrary();
+                    lib.name = name;
                     
                     lib.setAsync(library.async);
                     

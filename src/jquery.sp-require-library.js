@@ -17,21 +17,14 @@
         this._libraries = [];
         this._jsSources = [];
         this._cssSources = [];
-        this._urlLoader = $.spRequireUrlLoader.getInstance();
+        this._cacheLoader = $.spRequireCacheLoader.getInstance();
     };
-    
-    /**
-     * This variable solves the problem of the 'circular reference'.
-     * @static
-     * @var {Array.<$.spRequireLibrary>}
-     */
-    $.spRequireLibrary._circularLibraries = [];
     
     /**
      * URL loader.
      * @var {$.spRequireUrlLoader}
      */
-    $.spRequireLibrary.prototype._urlLoader = null;
+    $.spRequireLibrary.prototype._cacheLoader = null;
     
     /**
      * Is an asynchronous library?
@@ -88,7 +81,7 @@
      * @return {void}
      */
     $.spRequireLibrary.prototype.addJs = function (url) {
-        this._jsSources.push(url);
+        this._jsSources.push(this._getAbsoluteUrl(url));
     };
     
     /**
@@ -99,7 +92,7 @@
      * @return {void}
      */
     $.spRequireLibrary.prototype.addCss = function (url) {
-        this._cssSources.push(url);
+        this._cssSources.push(this._getAbsoluteUrl(url));
     };
     
     /**
@@ -134,12 +127,16 @@
      * @return {$.Promise}
      */
     $.spRequireLibrary.prototype._loadLibraries = function () {
+        var self = this;
         var l = new $.spRequireLoader();
-        $.spRequireLibrary._circularLibraries.push(this);
-        $.each(this._libraries, function () {
-            if ($.inArray(this, $.spRequireLibrary._circularLibraries) < 0) {
-                l.addLoader($.proxy(this.load, this));
-            }
+        $.each(this._libraries, function (index, library) {
+            l.addLoader(
+                $.proxy(
+                    self._cacheLoader.load,
+                    self._cacheLoader,
+                    library, $.proxy(library.load, library)
+                )
+            );
         });
         return l.load();
     };
@@ -154,7 +151,7 @@
         var l = new $.spRequireLoader();
         $.each(this._jsSources, function (index, url) {
             l.addLoader(function () {
-                return self._urlLoader.load(url, function () {
+                return self._cacheLoader.load(url, function () {
                     return $.ajax({
                         url: url,
                         dataType: "script",
@@ -178,11 +175,24 @@
     $.spRequireLibrary.prototype._loadCssSources = function () {
         var self = this;
         $.each(self._cssSources, function (index, url) {
-            self._urlLoader.load(url, function () {
+            self._cacheLoader.load(url, function () {
                 $('head').append(
                     $('<link rel="stylesheet" type="text/css" />').attr('href', url)
                 );
             });
         });
+    };
+    
+    /**
+     * Gets absolute URL.
+     * 
+     * @param {string} url URL
+     * 
+     * @return {string}
+     */
+    $.spRequireLibrary.prototype._getAbsoluteUrl = function (url) {
+        var a = document.createElement('a');
+        a.href = url;
+        return a.href;
     };
 })(jQuery);
