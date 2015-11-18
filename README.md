@@ -1,8 +1,6 @@
 # $.spRequire
 
-A jQuery plugin to load JavaScript libraries when they are needed. Unlike other similar plugins, this plugin considers the loading of CSS files by default.
-
-Note that the only library that can not be loaded is `jQuery` (for obvious reasons).
+A jQuery plugin to load JavaScript libraries when they are needed. Unlike other similar plugins, this plugin considers the loading of CSS files by default. Note that the only library that can not be loaded is the [jQuery](https://jquery.com/) library (for obvious reasons).
 
 See the `demo` folder for complete examples.
 
