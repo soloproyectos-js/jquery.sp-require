@@ -1,0 +1,26 @@
+{
+  "name": "jquery.sp-require",
+  "version": "0.2.0",
+  "description": "A jQuery plugin to load JavaScript libraries dynamically",
+  "main": "dist/jquery.sp-require.min.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soloproyectos-js/jquery.sp-require.git"
+  },
+  "keywords": [
+    "jquery-plugin",
+    "ecosystem:jquery"
+  ],
+  "author": "Gonzalo Chumillas",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/soloproyectos-js/jquery.sp-require/issues"
+  },
+  "homepage": "https://github.com/soloproyectos-js/jquery.sp-require#readme"
+}
