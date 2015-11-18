@@ -46,52 +46,44 @@ $.require('config', {
 });
 ```
 
-In some cases we can simplify the configuration object. You can use an `string` to indicate a single element, an `array` of `strings` to indicate multiple elements or a `plain-object` to indicate several JavaScript and CSS files. For example:
+In some cases we can simplify the configuration object. We can use a `string` to indicate a single element, an `array of strings` to indicate multiple elements or an `object` to indicate more complex objects. For example:
 
 ```JavaScript
-// lib1 has only one JavaScript file
 $.spRequire('config', {
-    lib1: 'js/script1.js'
-});
-
-// lib1 has two JavaScript files
-$.spRequire('config', {
-    lib1: ['js/script11.js', 'js/script12.js']
-});
-
-// lib1 has three JavaScript files and it requires lib2
-$.spRequire('config', {
-    lib1: {
-        sources: ['js/script11.js', 'js/script12.js', 'js/script13.js'],
+    // lib1 is composed by a single script
+    lib1: 'js/script1.js',
+    // lib2 is composed by two scripts
+    lib2: ['js/script21.js', 'js/script22.js'],
+    // lib3 is composed by a single script and requires lib2
+    lib3: {
+        sources: 'js/script3.js',
         requires: 'lib2'
     },
-    lib2: 'js/script2.js'
-});
-
-// lib1 has one JavaScript file and one CSS file and it requires lib2 and lib3
-$.spRequire('config', {
-    lib1: {
-        sources: {
-            js: 'js/script1.js',
-            css: 'css/style1.css'
-        }
+    // lib4 is composed by two scripts and requires two libraries
+    lib4: {
+        sources: ['js/script41.js', 'js/script42.js'],
         requires: ['lib2', 'lib3']
     },
-    lib2: 'js/script2.js',
-    lib3: 'js/script3.js'
-});
-
-// lib1 has several JavaScript and CSS files and it requires lib2 and lib3
-$.spRequire('config', {
-    lib1: {
+    // lib5 is composed by a single script and a single CSS file and requires three libraries
+    // it is also a 'synchronous' library. That is: it is loaded after the required libraries
+    lib5: {
+        async: false,
         sources: {
-            js: ['js/script11.js', 'js/script12.js', 'js/script13.js'],
-            css: ['css/style11.css', 'css/style12.css', 'css/style13.css']
-        }
-        requires: ['lib2', 'lib3']
+            js: 'js/script5.js',
+            css: 'css/style5.js'
+        },
+        requires: ['lib1', 'lib2', 'lib3']
     },
-    lib2: 'js/script2.js',
-    lib3: 'js/script3.js'
+    // lib6 is composed by several scripts and CSS files and requires a single library
+    // it is also a 'synchronous' library. That is: it is loaded after the required libraries
+    lib6: {
+        async: false,
+        sources: {
+            js: ['js/script61.js', 'js/script62.js', 'js/script63.js'],
+            css: ['css/style61.css', 'css/style62.css']
+        },
+        requires: 'lib5'
+    }
 });
 ```
 
