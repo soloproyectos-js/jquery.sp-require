@@ -97,7 +97,7 @@ $.spRequire('config', {
 
 ## Basic usage
 
-After declaring libraries in the configuration object, we can load tehem dynamically. For example:
+After declaring libraries in the configuration object, we can load them dynamically. For example:
 
 ```JavaScript
 $.spRequire(['lib1', 'lib2'], function () {
