@@ -122,7 +122,7 @@
         this._loadCssSources();
         
         // loads JavaScript sources
-        var l = new $.spRequireLoader(this);
+        var l = new $.spRequireLoader();
         l.addLoader($.proxy(this._loadLibraries, this));
         l.addLoader($.proxy(this._loadJsSources, this));
         return l[this._isAsync? 'load': 'syncLoad']();
@@ -134,9 +134,8 @@
      * @return {$.Promise}
      */
     $.spRequireLibrary.prototype._loadLibraries = function () {
+        var l = new $.spRequireLoader();
         $.spRequireLibrary._circularLibraries.push(this);
-        
-        var l = new $.spRequireLoader(this);
         $.each(this._libraries, function () {
             if ($.inArray(this, $.spRequireLibrary._circularLibraries) < 0) {
                 l.addLoader($.proxy(this.load, this));
@@ -152,7 +151,7 @@
      */
     $.spRequireLibrary.prototype._loadJsSources = function () {
         var self = this;
-        var l = new $.spRequireLoader(this);
+        var l = new $.spRequireLoader();
         $.each(this._jsSources, function (index, url) {
             l.addLoader(function () {
                 return self._urlLoader.load(url, function () {
